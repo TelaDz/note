@@ -18,7 +18,6 @@ var obj={a:1,b:2,c:3};
 // })
 // console.log(a);
 
-
 // var a=$.filter(arr,fu
 // if(item>2) retur
 // });

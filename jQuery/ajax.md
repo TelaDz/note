@@ -17,12 +17,10 @@
 
 ### jsonp通信
 
-// $.getScript("http://10.9.42.207:4002?fn=callBack")
+// $.getScript("`http://10.9.42.207:4002?fn=callBack`")
 // function callBack(a,b){
 //     console.log(a+b);
 // }
-
-
 
 ## 中间层通信
 
@@ -34,22 +32,30 @@
 
 #### 直接写在地址栏后
 
-// $.get("http://10.9.42.207:4002?a=3&b=4",function(res){
-//     console.log(res);
-// })
+```js
+$.get("`http://10.9.42.207:4002?a=3&b=4`",function(res){
+    console.log(res);
+})
+```
 
 #### 分开写在第二个参数
-// $.get("http://10.9.42.207:4002","a=3&b=4",function(res){
-//     console.log(res);
-// });
+
+```js
+$.get("`http://10.9.42.207:4002`","a=3&b=4",function(res){
+    console.log(res);
+});
+```
 
 #### 第二个参数直接写对象
-// $.get("http://10.9.42.207:4002",{a:3,b:4},function(res){
-//     console.log(res);
-// })
 
+```js
+$.get("`http://10.9.42.207:4002`",{a:3,b:4},function(res){
+    console.log(res);
+})
+```
 
 #### 封装GET通信
+
 ```js
 $.extend((function(){
     return {
@@ -90,61 +96,73 @@ $.extend((function(){
 // })
 ```
 
+---
+
 ### POST
 
 #### 与GET基本相似
 
-// $.post("http://10.9.42.207:4002",{a:3,b:4},function(res){
-//     console.log(res);
-// })
+```js
+$.post("http://10.9.42.207:4002",{a:3,b:4},function(res){
+    console.log(res);
+})
 
-// $.post("http://10.9.42.207:4002","a=3&b=4",function(res){
-//     console.log(res);
-// });
+$.post("http://10.9.42.207:4002","a=3&b=4",function(res){
+    console.log(res);
+});
+```
 
 ### LOAD
 
-// $(document).load("http://10.9.42.207:4002","a=3&b=4",function(res{
-// console.log(res);
-// })
+```js
+$(document).load("`http://10.9.42.207:4002`","a=3&b=4",function(res{
+console.log(res);
+})
 
-// POST
-// $(document).load("http://10.9.42.207:4002",{a:3,b:4}function(res){
-//     console.log(res);
-// })
-        
+POST
+$(document).load("`http://10.9.42.207:4002`",{a:3,b:4}function(res){
+    console.log(res);
+})
 
-// $(document).load("./config/a.json",function(res){
-//     console.log(res);
-// });
-// $(document).load("./js/a.js",function(res){
-//     // var script=document.createElement("scirpt");
-//     // script.innerHTML=res;
-//     // document.body.appendChild(script);
-//     utils.b();
-// })
+$(document).load("./config/a.json",function(res){
+    console.log(res);
+});
+$(document).load("./js/a.js",function(res){
+    // var script=document.createElement("scirpt");
+    // script.innerHTML=res;
+    // document.body.appendChild(script);
+    utils.b();
+})
 
-// 转换进来的是一个文本或者html文本
-// $(".con").load("./2、动画.html");
+//转换进来的是一个文本或者html文本
+$(".con").load("./2、动画.html");
+```
+
+---
 
 ### AJAX
 
-// $.ajax({
- //     url:"http://10.9.42.207:4002",
- //     method:"POST",
- //     data:{a:1,b:2},
- //     success:function(res){
- //         console.log(res);
- //     }
- // })
+```js
+$.ajax({
+     url:"http://10.9.42.207:4002",
+     method:"POST",
+     data:{a:1,b:2},
+     success:function(res){
+         console.log(res);
+     }
+ })
+```
 
+---
 
-jsonp 通讯
+### jsonp 通讯
 
- // $.ajax({
- //     url:"http://10.9.42.207:4002?fn=callBack",
- //     dataType:"jsonp",
- // })
- // function callBack(a,b){
- //     console.log(a+b);
- // }
+```js
+ $.ajax({
+     url:"http://10.9.42.207:4002?fn=callBack",
+     dataType:"jsonp",
+ })
+ function callBack(a,b){
+     console.log(a+b);
+ }
+```

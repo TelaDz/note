@@ -1,3 +1,5 @@
+# 事件抛发案例
+
 ```js
 static IMG_LOAD_FINISH = "img_load_finish";
 

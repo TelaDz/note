@@ -361,7 +361,7 @@ $(function(){
 
 >jQueryUI专指由jQuery官方维护的UI方向的插件。
 
-http://www.runoob.com/jqueryui/jqueryui-tutorial.html
+`http://www.runoob.com/jqueryui/jqueryui-tutorial.html`
 
 ### jquery.qrcode.js
 
