@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        textarea {
+            width: 675px;
+            height: 500px;
+            background-color: white;
+            font-size: 18px;
+        }
+
+        input {
+            height: 30px;
+            line-height: 30px;
+            font-size: 20px;
+        }
+
+        #user {
+            width: 80px;
+            text-align: center
+        }
+
+        #msg {
+            width: 515px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        button {
+            width: 45px;
+            height: 35px;
+        }
+
+        .chat {
+            margin: auto;
+            width: 680px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="chat">
+        <textarea disabled></textarea>
+        <br>
+        <input type="text" id="user">
+        <input type="text" id="msg">
+        <button>发送</button>
+    </div>
+    <script>
+        // 长连接和短连接
+        // 短连接  当通信完成后断开前后端连接,一旦断开网络,服务器则不能找到客户端
+        // 长连接  保持通信的一直存在,因为一直保持信道连接,因此,数据可以在任何时候来回传递
+
+        // ajax是短连接,websocket是长连接
+
+        // ajax({type:0x01,user:"xietian",msg:"你好"});
+
+        var user, msg, bn, textArea;
+        var list = [];
+        init();
+        function init() {
+            user = document.querySelector("#user");
+            msg = document.querySelector("#msg");
+            bn = document.querySelector("button");
+            textArea = document.querySelector("textarea");
+            bn.addEventListener("click", sendMessage);
+            document.addEventListener("keyup", sendMessage);
+            setInterval(animation, 100);
+        }
+
+        function animation() {
+            ajax({ type: 0x02 }, "GET");
+        }
+
+        function sendMessage(e) {
+            if (e.type === "keyup" && e.keyCode !== 13) return;
+            if (user.value.trim().length === 0) return;
+            if (msg.value.trim().length === 0) return;
+            ajax({
+                type: 0x01,
+                user: user.value,
+                msg: msg.value
+            }, "GET");
+            // msg.value = "";
+        }
+        function ajax(obj, type) {
+            var xhr = new XMLHttpRequest();
+            xhr.addEventListener("load", loadHandler);
+            if (type === "POST") {
+                xhr.open("POST", "http://10.9.42.224:4010");
+                xhr.send(encodeURIComponent(JSON.stringify(obj)));
+            } else  {
+                var str = "";
+                str +=encodeURIComponent(JSON.stringify(obj));
+                xhr.open("GET", "http://10.9.42.224:4010?" + str);
+                xhr.send();
+            }
+        }
+        function loadHandler(e) {
+            var obj = JSON.parse(decodeURIComponent(this.response));
+            if (obj.error) {
+                alert(obj.error.msg);
+                return;
+            }
+            if (JSON.stringify(list) === JSON.stringify(obj.result)) return;
+            list = obj.result;
+            textArea.value = obj.result.reduce(function (value, item) {
+                return value + item.user + "说:" + item.msg + "\n";
+            }, "");
+            textArea.scrollTop = textArea.scrollHeight;
+        }
+    </script>
+</body>
+
+</html>

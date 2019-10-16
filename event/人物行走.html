@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .avatar {
+            width: 32px;
+            height: 33px;
+            background-image: url("./img/Actor01-Braver03.png");
+            position: absolute;
+            background-position-x: 0px;
+            background-position-y: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="avatar"></div>
+    <script>
+        var avatar,offsetLeft,offsetTop;
+        var code = 0,
+            time=20,
+            speed=0.5,
+            num=0;
+        init();
+        function init() {
+            avatar = document.querySelector(".avatar");
+            offsetLeft=avatar.offsetLeft;
+            offsetTop=avatar.offsetTop;
+            window.addEventListener("keydown", keyHandler);
+            window.addEventListener("keyup", keyHandler);
+            setInterval(animation, 16);
+        }
+
+        function keyHandler(e) {
+            if (e.type === "keydown") {
+                code = e.keyCode;
+                switch (code) {
+                    case 37:
+                        avatar.style.backgroundPositionY = "-33px";
+                        break;
+                    case 38:
+                        avatar.style.backgroundPositionY = "-99px";
+                        break;
+                    case 39:
+                        avatar.style.backgroundPositionY = "-66px";
+                        break;
+                    case 40:
+                        avatar.style.backgroundPositionY = "0px";
+                        break;
+                }
+            } else if (e.type === "keyup") {
+                code = 0;
+                avatar.style.backgroundPositionX = "0px";
+            }
+        }
+
+        function animation() {
+            if(!code)return;
+            changeAvatar();
+            avatarMove();
+        }
+
+        function avatarMove(){
+            switch(code){
+                case 37:
+                offsetLeft-=speed;
+                avatar.style.left=offsetLeft+"px";
+                break;
+                case 38:
+                offsetTop-=speed;
+                avatar.style.top=offsetTop+"px";
+                break;
+                case 39:
+                offsetLeft+=speed;
+                avatar.style.left=offsetLeft+"px";
+                break;
+                case 40:
+                offsetTop+=speed;
+                avatar.style.top=offsetTop+"px";
+                break;
+            }
+        }
+
+        // 防抖
+        function changeAvatar() {
+            time--;
+            if(time>0) return;
+            time=20;
+            num++;
+            if(num>3) num=0;
+            avatar.style.backgroundPositionX = -32*num+"px";
+        }
+    </script>
+</body>
+
+</html>

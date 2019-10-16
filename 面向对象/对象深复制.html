@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="div1"></div>
+    <div class="div1"></div>
+    <div class="div1"></div>
+    <script>
+
+
+        var obj1 = {};
+        Object.defineProperties(obj1, {
+            a: {
+                value: 1
+            },
+            b: {
+                writable: true,
+                enumerable: true,
+                value: 2
+            },
+            c: {
+                configurable: true,
+                writable: true,
+                value: 3
+            },
+            d: {
+                enumerable: true,
+                set: function (value) {
+                    this._d = value;
+                },
+                get: function () {
+                    if (!this._d) this._d = 0;
+                    return this._d;
+                }
+            }
+        });
+        var obj = {
+            a: 1,
+            b: [1, 2, 3],
+            c: {
+                a: "a",
+                b: true,
+                c: {
+                    a: new Date(),
+                    b: /^[a-z](!=[0-9])$/i,
+                    c: {
+                        a: new XMLHttpRequest(),
+                        b: [
+                            [1, 2, 3, 4, 5],
+                            [2, 3, 4, 5, 6],
+                            [3, 4, 5, 6, 7]
+                        ],
+                        c: {
+                            a: [
+                                { a: 1, b: 2 },
+                                { a: 2, b: 3 },
+                                { a: 3, b: 4 }
+                            ],
+                            b: function () {
+                                console.log("aaa");
+                            },
+                            c: obj1,
+                            d: document.querySelector(".div1")
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+
+      
+
+
+
+
+        var obj2 = cloneObject({}, obj);
+        console.log(obj,obj2);
+
+        function cloneObject(target, source) {
+            var names=Object.getOwnPropertyNames(source);
+            for (var i=0;i<names.length; i++) {
+                var desc = Object.getOwnPropertyDescriptor(source, names[i]);
+                if (typeof desc.value === "object" && desc.value !== null) {
+                    var objs;
+                    if (desc.value.constructor === Date) {
+                        objs = new desc.value.constructor(desc.value);
+                    } else if (desc.value.constructor === RegExp) {
+                        objs=new desc.value.constructor(desc.value.source, desc.value.flags);
+                    } else if (desc.value.__proto__.__proto__ && desc.value.__proto__.__proto__.constructor === HTMLElement) {
+                        objs = document.createElement(desc.value.nodeName);
+                    } else {
+                        objs = new desc.value.constructor();
+                    }
+                    Object.defineProperty(target, names[i], {
+                        // Object.defineProperty()方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性， 并返回这个对象。
+                        configurable: desc.configurable,
+                        writable: desc.writable,
+                        enumerable: desc.enumerable,
+                        value: objs
+                    });
+                    cloneObject(objs,desc.value);
+                } else {
+                    Object.defineProperty(target,names[i],desc);
+                }
+            }
+            return target;
+        }
+    </script>
+</body>
+
+</html>

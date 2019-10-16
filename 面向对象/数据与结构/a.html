@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        Function.prototype.bind1=function(){
+            var self=this;
+            return function(){
+                return self.apply(obj,Array.from(arguments));
+            }
+        }
+        var obj={
+            a:function(){
+                document.addEventListener("clcik",this.b.bindg(this));
+            },
+            b:function(e){
+                console.log(this,e);
+            }
+        }
+        obj.a();
+
+    </script>
+</body>
+
+</html>
