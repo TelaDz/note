@@ -1,36 +1,26 @@
 # 按键
 
-按键事件一般针对 window 或者 document 的,一般使用针对 window
+- 按键事件一般针对 window 或者 document 的,一般使用针对 window
+- window.addEventListener("keydown",keyHandler);
+- 键位
+  - ← 37 ↑ 38 → 39 ↓40
+  - 回车 13
 
-window.addEventListener("keydown",keyHandler);
-
-键位
-
-- ← 37 ↑ 38 → 39 ↓40
-
-回车 13
+---
 
 ## 1、keyboardEvent
 
 - 可以激活多次 keydown
-
 - 只能激活一次 keyup
-
-code: "KeyA" 按键名 正式区分按下键
-
-key: "a" 键名
-
-isComposing: false 是否启用输入法
-
-keyCode: 83 键码值 **->用这个**
-
-which: 83 键码
+  - code: "KeyA" 按键名 正式区分按下键
+  - key: "a" 键名
+  - isComposing: false 是否启用输入法
+  - keyCode: 83 键码值 **->用这个**
+  - which: 83 键码
 
 ```js
 window.addEventListener("keydown", keyHandler);
-
 window.addEventListener("keyup", keyHandler);
-
 window.addEventListener("keypress", keyHandler);
 
 function keyHandler(e) {
