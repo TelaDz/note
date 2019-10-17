@@ -1,36 +1,6 @@
 # extend
 
-$("div").constructor===$
-
-var arr=[1,2,3,4];
-var obj={a:1,b:2,c:3};
-// var a=$.map(arr,function(index,item){
-// return item+1;
-// })
-// var o=$.map(obj,function(prop,value){
-// return value+10;
-// })
-// console.log(o);
-
-// var a=$.map($("div"),function(index,item){
-// return  "`<div></div>`";
-// return $(item).text("nihao");
-// })
-// console.log(a);
-
-// var a=$.filter(arr,fu
-// if(item>2) retur
-// });
-// console.log(a);
-// var a=$.filter($("div"
-// // return Number
-// return item.clas
-// });
-// console.log(a);
-// var o=$.filter(obj,f
-// return value>1;
-// });
-// console.log(o);
+## 案例
 
 ```js
 $.extend((function(){
@@ -89,3 +59,41 @@ $.extend((function(){
     }
 })());
 ```
+
+利用传入的 fn 在封装的函数里执行 是一种桥接模式
+
+---
+
+## 其他
+
+$("div").constructor===$
+
+var arr=[1,2,3,4];
+var obj={a:1,b:2,c:3};
+// var a=$.map(arr,function(index,item){
+// return item+1;
+// })
+// var o=$.map(obj,function(prop,value){
+// return value+10;
+// })
+// console.log(o);
+
+// var a=$.map($("div"),function(index,item){
+// return  "`<div></div>`";
+// return $(item).text("nihao");
+// })
+// console.log(a);
+
+// var a=$.filter(arr,fu
+// if(item>2) retur
+// });
+// console.log(a);
+// var a=$.filter($("div"
+// // return Number
+// return item.clas
+// });
+// console.log(a);
+// var o=$.filter(obj,f
+// return value>1;
+// });
+// console.log(o);
