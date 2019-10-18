@@ -10,21 +10,23 @@
 
 <body>
   <script>
-forEach=function (arr,fn) {
-    for(var i=0,l=arr.length;i<l;i++){
-        var c=arr[i];
-        if(fn.call(c,i,c)===false){
-            return false;
-        }
-    }
-};
-function box1(index,num) {
-    console.log(index,num);
-}
-var arr=[10,9,8,7,6,5,4];
-forEach(arr,box1)
 
+      Object.prototype.forEach1 = function (fn) {
+          var names=Object.getOwnPropertyNames(this);    
+          // console.log(desc);
+         for (var i = 0; i < names.length; i++) {
+          var desc = Object.getOwnPropertyDescriptor(this, names[i]);
+          var strs=names[i]+':'+desc.value;
+          fn(strs, i, this);
+         }
+      }
 
+      var obj = {a: 1, b: 2, c: function () {}}
+
+      obj.forEach1(function (item, index, obj) {
+        console.log(item, index, obj);
+      })
+    
   </script>
 </body>
 
