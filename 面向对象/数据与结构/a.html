@@ -6,28 +6,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <style>
+        /* div::selection
+        {
+            color:#f00;
+        } */
+        div {
+            background-image: url("../eg/img/common.png");
+            width: 800px;
+            height: 600px;
+            background-size: 100% 100%;
+            border: 10px dashed #ccc;
+            padding: 20px;
+        }
+
+        div:nth-child(1) {
+            background-clip: content-box;
+        }
+
+        div:nth-child(2) {
+            background-clip: padding-box
+        }
+
+        div:nth-child(3) {
+            background-clip: border-box;
+            background-origin: border-box;
+        }
+    </style>
 </head>
 
 <body>
 
-    <script>
-        Function.prototype.bind1=function(){
-            var self=this;
-            return function(){
-                return self.apply(obj,Array.from(arguments));
-            }
-        }
-        var obj={
-            a:function(){
-                document.addEventListener("clcik",this.b.bindg(this));
-            },
-            b:function(e){
-                console.log(this,e);
-            }
-        }
-        obj.a();
+<div></div>
+<div></div>
+<div></div>
 
-    </script>
 </body>
 
 </html>

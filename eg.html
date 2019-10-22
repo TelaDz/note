@@ -6,28 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
+  <style>
+
+  </style>
+  
 </head>
 
 <body>
-  <script>
 
-      Object.prototype.forEach1 = function (fn) {
-          var names=Object.getOwnPropertyNames(this);    
-          // console.log(desc);
-         for (var i = 0; i < names.length; i++) {
-          var desc = Object.getOwnPropertyDescriptor(this, names[i]);
-          var strs=names[i]+':'+desc.value;
-          fn(strs, i, this);
-         }
-      }
 
-      var obj = {a: 1, b: 2, c: function () {}}
-
-      obj.forEach1(function (item, index, obj) {
-        console.log(item, index, obj);
-      })
-    
-  </script>
 </body>
 
 </html>
