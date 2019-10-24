@@ -1,0 +1,23 @@
+对数据表操作之前备份一下是个好习惯
+
+1、备份表结构
+
+create table table_bak like table_name;
+
+2、备份表数据
+
+insert into table_bak select * from table_name;
+
+3、删除原来主键字段(如id)
+
+alter table table_name drop id;
+
+4、添加主键，自增，放在第一位
+
+alter table table_name add id int(11) primary key auto_increment first;
+
+搞定
+
+5、检查没问题的话，备份的表可以删了
+
+delete from table_bak;
