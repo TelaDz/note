@@ -31,3 +31,14 @@ function ajax(url, obj, method = "GET") {
   });
 }
 ```
+
+```js
+//后端请求头
+res.writeHead(200,{
+  'Content-Type': 'application/json;charset=utf-8',
+  'Access-Control-Allow-Credentials': true,
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'PUT, POST, GET, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With'
+   });
+```
