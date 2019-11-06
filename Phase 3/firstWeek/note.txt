@@ -1,0 +1,35 @@
+
+技术调研 1d
+框架代码搭建（2d）
+模块开发（职位（2d）、搜索(2d)、我的(1d)）
+前后端联调试（3d）
+测试 （3d）
+上线（1d）
+合计：14d
+
+框架：
+前后端分离
+es6 + gulp + zepto.js +webpack
+
+
+框架搭建：
+//初始化工程，生成Package.json
+npm init -y
+
+yarn add gulp --dev
+//启动server ,打开浏览器
+yarn add gulp-webserver --dev
+//编译scss文件
+yarn add node-sass gulp-sass --dev
+//文件合并
+yarn add gulp-concat --dev
+//编译js文件
+yarn add webpack-stream -D
+
+loader:文件的转译（翻译官）
+//转译e6 es7 代码转成es5
+yarn add babel-loader @babel/core @babel/preset-env webpack -D
+yarn add @babel/plugin-transform-runtime @babel/runtime -D
+
+
+

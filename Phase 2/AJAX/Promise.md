@@ -10,7 +10,7 @@ function ajax(url, obj, method = "GET") {
     }
     str = str.slice(0, 1);
     var bool = method.toLowerCase() === "get";
-    if (method.toLowerCase() !== "get" && method.toLowerCas() !== "post") {
+    if (method.toLowerCase() !== "get" && method.toLowerCase() !== "post") {
       return;
     }
     var xhr = new XMLHttpRequest();

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./sass/b.css">
+</head>
+
+<body>
+    <!-- <div>
+        <div>
+            <a href="">超连接</a>
+            <span></span>
+        </div>
+    </div>
+    <div class="div0"></div> -->
+
+    <script>
+        // Array.prototype.getmin = function (fn) {
+        //     for (var i = 0; i < this.length; i++) {
+        //         let min
+        //         // min = min < this[i] ? min : this[i];
+        //         fn(min = min < this[i] ? min : this[i]);
+        //     }
+        //     var arr = [];
+        //     arr.getmin(function (min) {
+        //         console.log(min);
+        //     })
+        // }
+        
+        // var arr=[1,2,3,4]; var arrmin=arr.getmin();
+        // console.log(arrmin);
+    </script>
+</body>
+
+</html>
+<script>
+var Math = {
+    getmin: function() {
+      if (arguments.length === 0) return;
+      var getmin = arguments[0];
+      for (var i = 1; i < arguments.length; i++) {
+        getmin = getmin < arguments[i] ? getmin : arguments[i];
+      }
+      return getmin;
+    }
+  };
+  var arr=[1,2,3,4]; var arrmin=Math.getmin.apply(null,arr);
+        console.log(arrmin);
+
+        
+// var max = Maths.max.apply(null, arr);
+// console.log(max);
+</script>
+<script>
+function fn3(num) {
+    this.a=num;
+    fn4(this);
+}
+function fn4(obj) {
+    obj.b=10;
+    obj.c=20;
+}
+var obj1={};
+fn3.call(obj1,10);
+console.log(obj1);
+</script>
