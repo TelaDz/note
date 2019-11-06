@@ -1,5 +1,8 @@
 
 技术调研 1d
+
+首先 定一个总时间
+
 框架代码搭建（2d）
 模块开发（职位（2d）、搜索(2d)、我的(1d)）
 前后端联调试（3d）
@@ -8,7 +11,7 @@
 合计：14d
 
 框架：
-前后端分离
+前后端分离 rmvc结构(前后端分离)
 es6 + gulp + zepto.js +webpack
 
 
@@ -31,5 +34,20 @@ loader:文件的转译（翻译官）
 yarn add babel-loader @babel/core @babel/preset-env webpack -D
 yarn add @babel/plugin-transform-runtime @babel/runtime -D
 
+把html转成字符串
+yarn add string-loader -D
 
 
+数据对接
+服务端已经开发完成
+
+前后端并行开发,模拟数据（json-server）
+yarn add json-server -g
+json-server --watch ./mock/db.json 
+json-server ./mock/mock.js --routes ./mock/routes.json --port 9090
+http-proxy-middleware (代理),配合 gulp-webserver
+
+
+js模板
+art-template
+https://aui.github.io/art-template/zh-cn/docs/index.html
