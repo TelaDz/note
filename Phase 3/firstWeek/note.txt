@@ -51,3 +51,7 @@ http-proxy-middleware (代理),配合 gulp-webserver
 js模板
 art-template
 https://aui.github.io/art-template/zh-cn/docs/index.html
+
+路由的实现原理：
+history,事件：popstate
+hash,事件：hashchange
