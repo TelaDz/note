@@ -55,3 +55,6 @@ https://aui.github.io/art-template/zh-cn/docs/index.html
 路由的实现原理：
 history,事件：popstate
 hash,事件：hashchange
+
+像素问题(媒体查询)
+根据不同的设备像素比进行trsfrom 缩放 
