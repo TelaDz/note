@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  
+<script>
+    Array.prototype.distinct=function(){
+      var arr=this,result=[],len=arr.length;
+      for(var i=0;i<len;i++){
+        for(var j=1+i;j<len;j++){
+          if(arr[i]===arr[j])
+          j=++i
+        }
+        result.push(arr[i])
+      }
+      return result
+    }
+
+    var arr=[1,5,21,7,121,14,4,21,5,21,7,5,5,7,7,121,12,1]
+
+    var a=arr.distinct()
+    console.log(a);
+  </script>
+
+  
+
+</body>
+</html>
