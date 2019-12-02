@@ -58,6 +58,22 @@ npm list -g --depth=0 查看 npm 上已经全局安装的命令
 
 yarn config set registry http://registry.npm.taobao.org
 
+1.　　查看当前计算机的下载地址
+
+npm get registry
+
+2.　　修改为淘宝 npm 镜像
+
+npm config set registry http://registry.npm.taobao.org/
+
+3.　　修改为 cnpmjs 镜像
+
+npm config set registry http://r.cnpmjs.org/
+
+4.　　修改为原始地址
+
+npm config set registry http://registry.npmjs.org/
+
 ### 安装/重新安装依赖项
 
 初始化安装
