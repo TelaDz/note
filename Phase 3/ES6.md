@@ -4,11 +4,11 @@
 
 变量提升
 
-例如 console.log('a‘);
+例如 console.log('a');
 
 var a=1
 
-上面 a 会 undefined
+上面 a 会 undefined 如果是 let 就会报错
 
 let：声明的变量仅在块级作用域内有效
 
@@ -53,11 +53,17 @@ const fn = (a, b) => { a + b }; // {}可以省略
 
 不可以使用 yield 命令，因此箭头函数不能用作 Generator 函数。
 
-（5）字符串模板：为了解决+号拼接字符串的不便利。用 ``包裹字符串，在其中用\${}包裹变量或表达式。
+## 字符串模板
 
-// es6const a = 20;const b = 30;const string = `${a}+${b}=${a+b}`;
+为了解决+号拼接字符串的不便利。用 ``包裹字符串，在其中用\${}包裹变量或表达式。
 
-// es5var a = 20;var b = 30;var string = a + "+" + b + "=" + (a + b);
+// es6
+
+const a = 20;const b = 30;const string = `${a}+${b}=${a+b}`;
+
+// es5
+
+var a = 20;var b = 30;var string = a + "+" + b + "=" + (a + b);
 
 ## 展开运算符：（提高代码效率） 拓展运算符
 
@@ -93,43 +99,43 @@ ES5 中，属性放在构造函数 constructor 里，方法放在原型 prototyp
 
 ES6 中引入类 class 来代替构造函数 constructor；还提供了 extends 划分 super 关键字；
 
-实际上类的所有方法都定义在类的prototype属性
+实际上类的所有方法都定义在类的 prototype 属性
 
-也可以通过prototype属性对类添加方法
-
-```js
-Person.prototype.addFn=function(){
-    return "我是通过prototype新增加的方法,名字叫addFn";
-}
-var obj=new Person("laotie",88);
-console.log(obj.addFn());//我是通过prototype新增加的方法,名字叫addFn
-```
-
-还可以通过Object.assign方法来为对象动态增加方法
+也可以通过 prototype 属性对类添加方法
 
 ```js
-Object.assign(Person.prototype,{
-    getName:function(){
-        return this.name;
-    },
-    getAge:function(){
-        return this.age;
-    }
-})
-var obj=new Person("laotie",88);
-console.log(obj.getName());//laotie
-console.log(obj.getAge());//88
+Person.prototype.addFn = function() {
+  return "我是通过prototype新增加的方法,名字叫addFn";
+};
+var obj = new Person("laotie", 88);
+console.log(obj.addFn()); //我是通过prototype新增加的方法,名字叫addFn
 ```
 
-constructor方法如果没有显式定义，会隐式生成一个constructor方法。所以即使你没有添加构造函数，构造函数也是存在的。**constructor方法默认返回实例对象this**，但是也可以指定constructor方法返回一个全新的对象，让返回的实例对象不是该类的实例。
+还可以通过 Object.assign 方法来为对象动态增加方法
 
-constructor中定义的属性可以称为实例属性（即定义在this对象上），constructor外声明的属性都是定义在原型上的，可以称为原型属性（即定义在class上)。**hasOwnProperty()**函数用于判断属性是否是实例属性。其结果是一个布尔值， true说明是实例属性，false说明不是实例属性。in操作符会在通过对象能够访问给定属性时返回true,无论该属性存在于实例中还是原型中。
+```js
+Object.assign(Person.prototype, {
+  getName: function() {
+    return this.name;
+  },
+  getAge: function() {
+    return this.age;
+  },
+});
+var obj = new Person("laotie", 88);
+console.log(obj.getName()); //laotie
+console.log(obj.getAge()); //88
+```
 
-类的所有实例共享一个原型对象，它们的原型都是Person.prototype，所以proto属性是相等的
+constructor 方法如果没有显式定义，会隐式生成一个 constructor 方法。所以即使你没有添加构造函数，构造函数也是存在的。**constructor 方法默认返回实例对象 this**，但是也可以指定 constructor 方法返回一个全新的对象，让返回的实例对象不是该类的实例。
 
-也可以通过proto来为类增加方法。使用实例的proto属性改写原型，会改变Class的原始定义，影响到所有实例，所以**不推荐使用**
+constructor 中定义的属性可以称为实例属性（即定义在 this 对象上），constructor 外声明的属性都是定义在原型上的，可以称为原型属性（即定义在 class 上)。**hasOwnProperty()**函数用于判断属性是否是实例属性。其结果是一个布尔值， true 说明是实例属性，false 说明不是实例属性。in 操作符会在通过对象能够访问给定属性时返回 true,无论该属性存在于实例中还是原型中。
 
-**class不存在变量提升**，所以需要先定义再使用。因为ES6不会把类的声明提升到代码头部，但是ES5就不一样,*ES5存在变量提升,可以先使用，然后再定义*。
+类的所有实例共享一个原型对象，它们的原型都是 Person.prototype，所以 proto 属性是相等的
+
+也可以通过 proto 来为类增加方法。使用实例的 proto 属性改写原型，会改变 Class 的原始定义，影响到所有实例，所以**不推荐使用**
+
+**class 不存在变量提升**，所以需要先定义再使用。因为 ES6 不会把类的声明提升到代码头部，但是 ES5 就不一样,_ES5 存在变量提升,可以先使用，然后再定义_。
 
 ## promise 对象：解决异步编程
 
@@ -189,29 +195,29 @@ a）Map 的键实际上是跟内存地址绑定的，只要内存地址不一样
 
 b）Map 实例的属性和操作方法：
 
-size 属性：返回 Map 结构的成员总数；
+size 属性：返回 Map 结构的成员总数；
 
-set(key, value)：设置键名 key 对应的键值为 value，然后返回整个 Map 结构，若 key 已有值，则更新键值，否则生成该键。
+set(key, value)：设置键名 key 对应的键值为 value，然后返回整个 Map 结构，若 key 已有值，则更新键值，否则生成该键。
 
-get(key)：读取 key 对应的键值
+get(key)：读取 key 对应的键值
 
-has(key)：返回布尔值，表示某个键是否存在当前 map 对象中。
+has(key)：返回布尔值，表示某个键是否存在当前 map 对象中。
 
-delete(key)：删除某个键，返回 true，删除失败返回 false
+delete(key)：删除某个键，返回 true，删除失败返回 false
 
-clear()：其清除所有成员，没有返回值
+clear()：其清除所有成员，没有返回值
 
 c）map 的遍历方法：
 
-keys()：返回键名
+keys()：返回键名
 
-values：返回键值
+values：返回键值
 
-entries：返回所有成员
+entries：返回所有成员
 
-forEach()：遍历 map 的所有成员，map 的遍历顺序就是插入顺序
+forEach()：遍历 map 的所有成员，map 的遍历顺序就是插入顺序
 
-（12）Symbol：新的数据类型，表示独一无二的值，不会与其他属性名产生冲突；
+## Symbol：新的数据类型，表示独一无二的值，不会与其他属性名产生冲突；
 
 Symbol 值通过 Symbol 函数生成；
 
