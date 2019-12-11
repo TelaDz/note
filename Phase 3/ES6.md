@@ -163,7 +163,7 @@ entries()、values()、keys()
 
 ## Set 和 Map 数据结构
 
-① 　 Set
+### Set
 
 a）Set 实例成员值唯一存储 key 值，map 实例存储键值对（key-value）
 
@@ -189,7 +189,7 @@ entries()：返回键值对
 
 forEach()：使用回调遍历每个成员
 
-② 　 Map
+### Map
 
 a）Map 的键实际上是跟内存地址绑定的，只要内存地址不一样，就视为两个键；
 
@@ -217,7 +217,7 @@ entries：返回所有成员
 
 forEach()：遍历 map 的所有成员，map 的遍历顺序就是插入顺序
 
-## Symbol：新的数据类型，表示独一无二的值，不会与其他属性名产生冲突；
+## Symbol：新的数据类型，表示独一无二的值，不会与其他属性名产生冲突
 
 Symbol 值通过 Symbol 函数生成；
 
