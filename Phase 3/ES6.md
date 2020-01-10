@@ -32,8 +32,8 @@ const [a, b, c] = arr;
 ## 字符串的遍历：for...of 循环遍历
 
 ```js
-for (let codePointAt of "hicai") {
-  console.log(codePointAt);
+for (let codePointAt of 'hicai') {
+  console.log(codePointAt)
 } // h i c a i
 ```
 
@@ -104,27 +104,27 @@ ES6 中引入类 class 来代替构造函数 constructor；还提供了 extends 
 也可以通过 prototype 属性对类添加方法
 
 ```js
-Person.prototype.addFn = function() {
-  return "我是通过prototype新增加的方法,名字叫addFn";
-};
-var obj = new Person("laotie", 88);
-console.log(obj.addFn()); //我是通过prototype新增加的方法,名字叫addFn
+Person.prototype.addFn = function () {
+  return '我是通过prototype新增加的方法,名字叫addFn'
+}
+var obj = new Person('laotie', 88)
+console.log(obj.addFn()) //我是通过prototype新增加的方法,名字叫addFn
 ```
 
 还可以通过 Object.assign 方法来为对象动态增加方法
 
 ```js
 Object.assign(Person.prototype, {
-  getName: function() {
-    return this.name;
+  getName: function () {
+    return this.name
   },
-  getAge: function() {
-    return this.age;
-  },
-});
-var obj = new Person("laotie", 88);
-console.log(obj.getName()); //laotie
-console.log(obj.getAge()); //88
+  getAge: function () {
+    return this.age
+  }
+})
+var obj = new Person('laotie', 88)
+console.log(obj.getName()) //laotie
+console.log(obj.getAge()) //88
 ```
 
 constructor 方法如果没有显式定义，会隐式生成一个 constructor 方法。所以即使你没有添加构造函数，构造函数也是存在的。**constructor 方法默认返回实例对象 this**，但是也可以指定 constructor 方法返回一个全新的对象，让返回的实例对象不是该类的实例。
@@ -136,6 +136,18 @@ constructor 中定义的属性可以称为实例属性（即定义在 this 对�
 也可以通过 proto 来为类增加方法。使用实例的 proto 属性改写原型，会改变 Class 的原始定义，影响到所有实例，所以**不推荐使用**
 
 **class 不存在变量提升**，所以需要先定义再使用。因为 ES6 不会把类的声明提升到代码头部，但是 ES5 就不一样,_ES5 存在变量提升,可以先使用，然后再定义_。
+
+## generator 生成器与 yield 语句
+
+generator 的函数使用环境为在一个方法里面分开几个部分来,到达某一个条件才执行这个函数的后一部分,而不需要跑完这个函数整体.
+
+在 generator 生成器里面的函数返回值为一个对象.
+
+这个对像的 value 属性值为这个函数的返回值,done 为这个函数返回这个值时,这个函数的执行状态,如果执行结束则为 true 否则为 false.
+
+如果为 false 则这个函数依旧可以使用 next()执行下一步.
+
+在调用 yield 时我们还可以传入参数,此参数会作为上一个任务 yield 表达式的值,这个值会作为上一次任务 yield 的值.第一次使用 yield 时不能传入值.
 
 ## promise 对象：解决异步编程
 
