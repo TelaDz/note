@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/RollImage.js"></script>
+</head>
+<body>
+        <script>
+
+//            所有的轮播图片样式
+            var imgsStyle= {
+                width: "960px",
+                height: "320px"
+            };
+//            右侧按钮样式
+            var rightBnStyle={
+                position: "absolute",
+                right: "10px",
+                top: "120px"
+            };
+//            左侧按钮的样式
+            var leftBnStyle={
+                position: "absolute",
+                left: "10px",
+                top: "120px"
+            };
+//            所有li的样式
+            var liStyle={
+                width: "20px",
+                height: "20px",
+                borderRadius:"20px",
+                backgroundColor:"rgba(255,0,0,0.6)",
+               border: "1px solid #FF0000",
+               float: "left",
+               lineHeight: "20px",
+               textAlign: "center",
+               marginLeft: "20px",
+               color:"white"
+            };
+//            ul的样式
+            var ulStyle={
+                listStyle: "none",
+                 position: "absolute",
+                 bottom: "20px",
+                 left: "350px"
+            };
+//            轮播图片的容器样式
+            var imgConStyle={
+                    width: "1920px",
+                     height:"320px",
+                    position: "absolute",
+                    left:"0px"
+            };
+//            最大容器的样式
+            var maskDivStyle={
+                width: "960px",
+                height: "320px",
+                overflow: "hidden",
+               position:"relative" ,
+               margin: "auto",
+               backgroundColor: "antiquewhite"
+            };
+//            轮播图片容器
+            var imgCon;
+//            最大容器
+            var maskDiv;
+//            左侧按钮
+            var leftBn;
+//            右侧按钮
+            var rightBn;
+//            所有li
+            var lis;
+//            目标要轮播的位置
+            var targetP=0;
+//            当前的位置
+            var currentP=0;
+//            轮播方向
+            var direction="";
+//            自动轮播间隔时间
+            var time=120;
+//            是否自动轮播
+            var autoBool=true;
+//            要轮播图片的数组
+            var imgArr=["image/a.jpeg","image/b.jpeg","image/c.jpeg","image/d.jpeg","image/e.jpeg"];
+//            轮播按钮的左右按钮图片源数组
+            var directionButtonSource=["image/left.png","image/right.png"];
+//            初始化函数执行
+            init();
+            /*
+            * 帧动画函数
+            * 该帧动画函数中，包括每帧执行自动轮播和图片移动两个方法
+            * autoShow  自动轮播函数
+            * imgMove   图片移动函数
+            * */
+            function animation() {
+                requestAnimationFrame(animation);
+                autoShow();
+                imgMove();
+            }
+            /*
+            * 初始化函数
+            * initHtml  初始化html和style
+            * changeLi 改变当前li的样式，保证第一个被选中
+            * animation  开启帧动画
+            * 给左右按钮加侦听点击事件
+            * 给所有li加侦听点击事件
+            * 给最外层容器增加鼠标经过和离开事件，用来判断是否自动轮播
+            * */
+            function init() {
+                initHtml();
+                changeLi();
+                animation();
+                leftBn.addEventListener("click",clickHandler);
+                rightBn.addEventListener("click",clickHandler);
+                for(var j=0;j<lis.length;j++){
+                    lis[j].addEventListener("click",clickHandler);
+                }
+                maskDiv.addEventListener("mouseover",maskDivHandler);
+                maskDiv.addEventListener("mouseout",maskDivHandler);
+            }
+            /*
+            * 初始化HTML标签
+            *
+            * */
+            function initHtml() {
+//                创建最大容器div，并且添加到body
+                maskDiv=createDiv("maskDiv",maskDivStyle);
+                document.body.appendChild(maskDiv);
+//                创建图片滚动容器，并且放在最大容器中
+                imgCon=createDiv("imgCon",imgConStyle);
+                maskDiv.appendChild(imgCon);
+//                创建左右图片按钮
+                leftBn=createImg(directionButtonSource[0],"leftBn",leftBnStyle);
+                maskDiv.appendChild(leftBn);
+                rightBn=createImg(directionButtonSource[1],"rightBn",rightBnStyle);
+                maskDiv.appendChild(rightBn);
+//                新建列表内容数组，根据图片的列表数组创建，有多少图片就有多少项
+                var list=[];
+                for(var i=0;i<imgArr.length;i++){
+                    list.push(i+1);
+                }
+//                根据列表内容创建ul，li列表,并且设置他们的样式
+                var ul=createUl(list,ulStyle,liStyle);
+                maskDiv.appendChild(ul);
+//                获取创建好的li列表
+                lis=ul.getElementsByTagName("li");
+//                创建轮播图的首图,首图是图片列表中的第一张
+                var img=createImg(imgArr[0],"",imgsStyle);
+                imgCon.appendChild(img);
+            }
+
+            /*
+            * 点击事件，该点击事件涵盖左右按钮点击，li列表点击
+            * 参数 e
+            *   e  点击事件
+            *   如果当前方向确定的时候，点击以后不执行任何变化，原因是，这个时候是正在滚动轮播的时候
+            *   如果当前点击的对象是leftBn 处理目标位置后退，减法处理，如果当前是0时，为了保证目标位置
+            *           不为负数，因此轮回为图片数组的最后一张位置，并且调用更改方向函数，如果向左时
+            *           传入false
+            *   如果当前点击的对象是rightBn，处理目标位置前进，加法处理，如果当前是最后一张图片位置时，
+            *           为了保证不超出数组，因此轮回为第一张图片位置，并且调用更改方向函数，如果向右时
+            *           传入true
+            *
+            *    如果当前点击的是列表项，处理目标位置为当前点击的第几项的下标，并且比较当前的位置与目标
+            *           位置谁大，如果目标位置大，调用更改方向函数，传入向左，如果目标位置小，调用更改
+            *           方向函数，传入向右
+            * */
+            function clickHandler(e) {
+                if(!e){
+                    e=window.event;
+                }
+//                如果不是空是表示当前正在轮播，因此返回出去不执行后续语句
+               if(direction!="") return;
+                if(leftBn==this){
+                    if(targetP==0){
+                        targetP=lis.length-1;
+                    }else{
+                        targetP--;
+                    }
+//                    告知函数向右运动
+                    changeDirection(false);
+                }else if(rightBn==this){
+                    if(targetP==lis.length-1){
+                        targetP=0
+                    }else{
+                        targetP++;
+                    }
+//                    告知函数向左运动
+                    changeDirection(true);
+                }else{
+                    for(var i=0;i<lis.length;i++){
+                        if(lis[i]==this){
+                            targetP=i;
+//                            如果目标位置小于当前位置时，传入向右走，否则传入向左走
+                            if(targetP<currentP){
+                                changeDirection(false);
+                            }else{
+                                changeDirection(true);
+                            }
+                        }
+                    }
+                }
+            }
+
+            /*
+            *更改左右方向函数
+            * 参数 left 该参数是布尔值，如果left为true向左走，如果left为false向右走
+            *
+            * 如果当前的位置和目标位置一样时，表示不动，跳出该函数
+            * 先创建一个图片，并且设定改图片的样式
+            * 判断left参数是否是true，如果是true时，方向定义为左，并且，把新创建的
+            *           图片插入到图片容器的最后，即原图片的右侧
+            *  判断left参数是否是false，如果是false时，方向定义为右，并且，把新创建的
+             *           图片插入到图片容器的最前面，即原图片的左侧，因为插入到左侧后，
+             *           原图片相对会移动到后面，因此，我们将图片容器向左移动一个图片
+             *           的位置，用来显示内容仍然是当前图片
+            * */
+            function changeDirection(left) {
+                if(targetP==currentP) return;
+                var img=createImg(imgArr[targetP],"",imgsStyle);
+                if(left){
+                    direction="left";
+                    imgCon.appendChild(img);
+                }else{
+                    direction="right";
+                    imgCon.insertBefore(img,imgCon.firstElementChild);
+                    imgCon.style.left="-960px"
+                }
+            }
+            /*
+            * 修改li列表点击时的样式
+            * 寻找到当前的位置，如果当前的位置是列表中的该项，将该项的背景色色值为白色半透，文字颜色为红色
+            * 除此之外的所有列表项为红色半透，文字颜色为白色
+            * */
+            function changeLi() {
+                for(var i=0;i<lis.length;i++){
+                    if(currentP==i){
+                        lis[currentP].style.backgroundColor="rgba(255,255,255,0.6)";
+                        lis[currentP].style.color="#FF0000";
+                    }else{
+                        lis[i].style.backgroundColor="rgba(255,0,0,0.6)";
+                        lis[i].style.color="#FFFFFF";
+                    }
+                }
+            }
+
+
+            /*
+            * 图片移动函数，该函数是在动画函数中，因此，每帧自动执行一次
+            * 每帧判断当前的方向，如果当前方向发生改变时，direction变量就会变成left或者right
+            * 如果direction是left时
+            *           向左移动，每帧移动30像素，如果移动到了改图片的宽度位置后，停止移动
+            *           并且，删除第一张图片，设置容器位置是0，设置方向为空字符，如果为空字符，
+            *           下一帧不运行该函数，再将目标位置赋值给当前位置，到达目标，修改li显示内容
+            *           重新设置自动轮播的时间初始120
+            *  如果direction是right时
+             *           向右移动，每帧移动30像素，如果移动到了容器为0时，停止移动
+             *           并且，删除最后一张图片，设置容器位置是0，设置方向为空字符，如果为空字符，
+             *           下一帧不运行该函数，再将目标位置赋值给当前位置，到达目标，修改li显示内容
+             *           重新设置自动轮播的时间初始120
+            * */
+            function imgMove() {
+                //如果方向不是左并且不是右的时候，不进入该函数内容
+                if(direction!="left" && direction!="right") return;
+                if(direction=="left"){
+                    if(parseFloat(imgCon.style.left)>-960){
+                        imgCon.style.left=parseFloat(imgCon.style.left)-30+"px"
+                    }else{
+                        imgCon.removeChild(imgCon.firstElementChild);
+                        imgCon.style.left="0px";
+                        direction="";
+                        currentP=targetP;
+                        changeLi();
+                        time=120;
+                    }
+
+                }
+                if(direction=="right"){
+                    if(parseFloat(imgCon.style.left)<0){
+                        imgCon.style.left=parseFloat(imgCon.style.left)+30+"px"
+                    }else{
+                        imgCon.removeChild(imgCon.lastElementChild);
+                        imgCon.style.left="0px";
+                        direction="";
+                        currentP=targetP;
+                        changeLi();
+                        time=120;
+                    }
+
+                }
+            }
+
+            /*
+            * 自动轮播函数，该函数是在动画函数中，因此，每帧自动执行一次
+            * 如果自动轮播设置为false，不进入。
+            * time是次数，每次递减，当time=0时，进入改变，否则不进入，保证是120帧进入一次。
+            * 如果目标的位置大于图片列表长度-1时，就让目标位置归0，否则递加，设置方向向左执行函数
+            * */
+            function autoShow() {
+               if(!autoBool) return;
+                time--;
+                if(time!=0) return;
+
+                if(targetP==imgArr.length-1){
+                    targetP=0
+                }else{
+                    targetP++;
+                }
+                changeDirection(true);
+            }
+            /*
+            * 当鼠标滑过外层容器的处理事件
+            * 如果是滑过时，让自动轮播停止
+            * 滑出时，让轮播开始
+            * 每次滑入滑出时，重设时间为120
+            * */
+            function maskDivHandler(e) {
+                if(!e){
+                    e=window.event;
+                }
+                if(e.type=="mouseover"){
+                    autoBool=false;
+                }else if(e.type=="mouseout"){
+                    autoBool=true;
+                }
+                time=120;
+            }
+
+            /*
+            * 修改标签的样式函数
+            * obj   要修改的标签对象
+            * style  要修改的样式对象   要求必须是style下的属性
+            *
+            * */
+            function changeObjectStyle(obj,style) {
+//                循环传入的style样式对象下的所有属性
+                for(var str in style){
+//                  与该内容相似  obj.style.backgroundColor=style.backgroundColor
+                    obj.style[str]=style[str];
+                }
+            }
+
+            /*
+            * 创建div函数
+            * 参数 id  style
+            * id   如果传入的id不是空字符串的话，将创建的id起名为传入id
+            * style   将创建的div更改样式为传入的样式参数
+            * */
+            function createDiv(id,style) {
+//                创建一个div
+                var div=document.createElement("div");
+                if(id.length>0){
+                    div.id=id;
+                }
+                changeObjectStyle(div,style);
+                return div;
+            }
+            /*
+            * 创建Img图片函数
+            * 参数  src  id  style
+            * src   图片的源路径
+            * id    如果传入的id不是空字符串的话，将创建的id起名为传入id
+            * style   将创建的div更改样式为传入的样式参数
+            * */
+            function createImg(src,id,style) {
+                var img=new Image();
+                if(id.length>0){
+                    img.id=id;
+                }
+                img.src=src;
+                changeObjectStyle(img,style);
+                return img;
+            }
+            /*
+            * 创建ul标签函数
+            * 参数 list  ulStyle，liStyle
+            * list  这个数组是列表数组，列表内容是该数组的项，例如[1,2,3,4,5];
+            * ulStyle ul标签的样式
+            * liStyle li标签的样式
+            * */
+            function createUl(list,ulStyle,liStyle) {
+//                创建ul标签
+                var ul=document.createElement("ul");
+//                给ul标签添加样式
+                changeObjectStyle(ul,ulStyle);
+//                根据传入的列表项创建li
+                for(var i=0;i<list.length;i++){
+//                    创建li
+                    var li=document.createElement("li");
+//                    给li添加样式
+                    changeObjectStyle(li,liStyle);
+//                    给li的内容赋值为列表项
+                    li.textContent=list[i];
+//                    把li添加到ul中
+                    ul.appendChild(li);
+                }
+                return ul;
+            }
+        </script>
+</body>
+</html>

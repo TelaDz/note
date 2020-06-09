@@ -1,0 +1,15 @@
+# weapp
+
+centos7 安装 nodejs
+
+curl --silent --location https://rpm.nodesource.com/setup_8.x | bash
+
+升级node 版本
+npm install -g n
+
+安装lts版本
+ n lts
+
+
+
+ npm install pm2 -g

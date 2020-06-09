@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+
+</head>
+
+<body>
+  <script>
+
+    var imgsStyle = {
+      width: "960px",
+      height: "320px"
+    };
+
+    var rightBtnStyle = {
+      position: "absolute",
+      right: "10px",
+      top: "120px"
+    };
+
+    var leftBtnStyle = {
+      position: "absolute",
+      left: "10px",
+      top: "120px"
+    };
+
+    var liStyle = {
+      width: "20px",
+      height: "20px",
+      borderRadius: "20px",
+      backgroundColor: "rgba(255,0,0,0.6)",
+      border: "1px solid #FF0000",
+      float: "left",
+      lineHeight: "20px",
+      textAlign: "center",
+      marginLeft: "20px",
+      color: "white"
+    };
+
+    var ulStyle = {
+      listStyle: "none",
+      position: "absolute",
+      bottom: "20px",
+      left: "350px"
+    };
+
+    var imgConStyle = {
+      width: "1920px",
+      height: "320px",
+      position: "absolute",
+      left: "0px"
+    };
+
+    var parentDivStyle = {
+      width: "960px",
+      height: "320px",
+      overflow: "hidden",
+      position: "relative",
+      margin: "auto",
+      backgroundColor: "antiquewhite"
+    };
+    var parentDiv, imgCon, leftBtn, rightBtn, liAll
+
+    var imgArr = ["./image/a.jpeg", "./image/b.jpeg"]
+
+    var btn = ['./image/left.png', './image/right.png']
+
+    var direction = '';
+    var targetP = 0, currentP = 0;
+    var auto = true;
+    var time = 150;
+    init()
+
+    function init() {
+      htmlInit()
+      changeLi();
+      animation()
+      leftBtn.addEventListener('click', clickHandler)
+      rightBtn.addEventListener('click', clickHandler)
+
+      for (var i = 0; i < liAll.length; i++) {
+        liAll[i].addEventListener('click', clickHandler)
+      }
+      // parentDiv.addEventListener('mouseover',parentDivHandler)
+      // parentDiv.addEventListener('mouseout',parentDivHandler)
+    }
+
+    function animation() {
+      requestAnimationFrame(animation)
+      autoShow();
+      imgMove();
+    }
+
+    function imgMove() {
+      if (direction == '') return;
+      if (direction == 'left') {
+        if (parseFloat(imgCon.style.left) > -960) {
+          imgCon.style.left = parseFloat(imgCon.style.left) - 30 + 'px'
+        } else {
+          imgCon.removeChild(imgCon.firstElementChild)
+          imgCon.style.left = '0px';
+          direction = '';
+          currentP = targetP;
+          changeLi();
+          time = 150;
+        }
+      }
+    }
+
+    function autoShow() {
+      if (!auto) return;
+      time--
+      if (time != 0) return;
+      if (targetP == imgArr.length - 1) {
+        targetP = 0;
+      } else {
+        targetP++;
+      }
+      changeDirection(true)
+    }
+
+    function changeLi() {
+      for (var i = 0; i < liAll.length; i++) {
+        if (currentP == i) {
+          liAll[currentP].style.backgroundColor = 'rgba(255,255,255,0.6)';
+          liAll[currentP].style.color = '#f00'
+        } else {
+          liAll[i].style.backgroundColor = 'rgba(255,0,0,0.6)';
+          liAll[i].style.color = '#fff'
+        }
+      }
+    }
+
+    function clickHandler(e) {
+      if (!e) {
+        e = window.event;
+      }
+      if (direction != '') {
+        return
+      }
+      console.log(this);
+      if (leftBtn == this) {
+        if (targetP == 0) {
+          targetP = liAll.length - 1;
+        } else {
+          targetP--;
+        }
+        changeDirection(false)
+      } else if (rightBtn == this) {
+        if (targetP == liAll.length - 1) {
+          targetP = 0;
+        } else {
+          targetP++;
+        }
+        changeDirection(true)
+      } else {
+        for (var i = 0; i < liAll.length; i++) {
+          if (liAll[i] == this) {
+            targetP = i;
+            if (targetP < currentP) {
+              changeDirection(false)
+            } else {
+              changeDirection(true)
+            }
+          }
+        }
+      }
+    }
+
+    function changeDirection(bool) {
+      console.log(bool);
+      if (targetP == currentP) return;
+      var img = createImg(imgArr[targetP], '', imgsStyle);
+      if (bool) {
+        direction = 'left';
+        imgCon.appendChild(img)
+      } else {
+        direction = 'right';
+        imgCon.insertBefore(img, imgCon.firstElementChild)
+        imgCon.style.left = '-960px'
+      }
+    }
+
+    function htmlInit() {
+      parentDiv = creartDiv('parentDiv', parentDivStyle)
+      document.body.appendChild(parentDiv)
+      imgCon = creartDiv('imgCon', imgConStyle)
+      parentDiv.appendChild(imgCon)
+      leftBtn = createImg(btn[0], 'leftBtn', leftBtnStyle)
+      parentDiv.appendChild(leftBtn)
+      rightBtn = createImg(btn[1], 'rightBtn', rightBtnStyle)
+      parentDiv.appendChild(rightBtn)
+      var list = []
+      for (var i = 0; i < imgArr.length; i++) {
+        list.push(i + 1);
+      }
+
+      var ul = createUl(list, ulStyle, liStyle)
+      parentDiv.appendChild(ul)
+
+      liAll = ul.getElementsByTagName('li')
+      var imgOne = createImg(imgArr[0], '', imgsStyle);
+      imgCon.appendChild(imgOne)
+    }
+
+    function componentStyle(el, styles) {
+      for (var style in styles) {
+        el.style[style] = styles[style]
+      }
+    }
+
+    function creartDiv(id, style) {
+      var div = document.createElement('div')
+      if (id) {
+        div.id = id
+      }
+      componentStyle(div, style);
+      return div
+    }
+
+    function createImg(src, id, style) {
+      var img = new Image()
+      if (id) {
+        img.id = id
+      }
+      img.src = src
+      componentStyle(img, style);
+      return img
+    }
+
+    function createUl(list, ulStyle, liStyle) {
+      var ul = document.createElement('ul')
+      componentStyle(ul, ulStyle)
+      for (var i = 0; i < list.length; i++) {
+        var li = document.createElement('li')
+        componentStyle(li, liStyle)
+        li.textContent = list[i];
+        ul.appendChild(li)
+      }
+      return ul
+    }
+
+  </script>
+</body>
+
+
+</html>
